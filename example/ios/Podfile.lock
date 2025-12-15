@@ -1,12 +1,12 @@
 PODS:
-  - FBAEMKit (17.3.0):
-    - FBSDKCoreKit_Basics (= 17.3.0)
-  - FBSDKCoreKit (17.3.0):
-    - FBAEMKit (= 17.3.0)
-    - FBSDKCoreKit_Basics (= 17.3.0)
-  - FBSDKCoreKit_Basics (17.3.0)
-  - FBSDKShareKit (17.3.0):
-    - FBSDKCoreKit (= 17.3.0)
+  - FBAEMKit (18.0.0):
+    - FBSDKCoreKit_Basics (= 18.0.0)
+  - FBSDKCoreKit (18.0.0):
+    - FBAEMKit (= 18.0.0)
+    - FBSDKCoreKit_Basics (= 18.0.0)
+  - FBSDKCoreKit_Basics (18.0.0)
+  - FBSDKShareKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
   - Flutter (1.0.0)
   - image_picker_ios (0.0.1):
     - Flutter
@@ -14,11 +14,12 @@ PODS:
     - Flutter
     - FlutterMacOS
   - social_share (0.0.1):
-    - FBSDKCoreKit (= 17.3.0)
-    - FBSDKShareKit (= 17.3.0)
+    - FBSDKCoreKit (= 18.0)
+    - FBSDKShareKit (= 18.0)
     - Flutter
 
 DEPENDENCIES:
+  - FBSDKCoreKit (= 18.0.0)
   - Flutter (from `Flutter`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -42,15 +43,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/social_share/ios"
 
 SPEC CHECKSUMS:
-  FBAEMKit: 92f488a9c97208e2f6f01655750944d213fbc0b0
-  FBSDKCoreKit: 1be47a742ccdddf8dd85272c3953534214dc0f30
-  FBSDKCoreKit_Basics: fcafe75f7deeed1146d04ea51b45a69731e63c16
-  FBSDKShareKit: e96f20fc2f6f68d25ae310a0f64f147f25ef66a4
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
-  path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
-  social_share: 8bdb65f559212cdd0201e22d5d9df0fd3ee54ac1
+  FBAEMKit: e34530df538b8eb8aeb53c35867715ba6c63ef0c
+  FBSDKCoreKit: d3f479a69127acebb1c6aad91c1a33907bcf6c2f
+  FBSDKCoreKit_Basics: 017b6dc2a1862024815a8229e75661e627ac1e29
+  FBSDKShareKit: 082d1b087d6481af36f8d8433542f25f2fc2c8dd
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  social_share: 5bf4b586e8e4bd84294b82b25b7795215d01a99f
 
-PODFILE CHECKSUM: 1a782344d33c12ced0182eeab11e8668d253eb48
+PODFILE CHECKSUM: 800258157ef54dd95419f64077fe42fa678b621f
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
