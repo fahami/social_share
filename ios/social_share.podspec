@@ -18,7 +18,7 @@ A new flutter plugin project.
   s.dependency 'Flutter'
   s.dependency 'FBSDKCoreKit', "18.0"
   s.dependency 'FBSDKShareKit', "18.0"
-  s.platform = :ios, '12.0'
+  s.platform = :ios, '13.0'
 
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
 end
