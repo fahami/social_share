@@ -1,3 +1,17 @@
+## 2.3.2
+
+- iOS: support the `UISceneDelegate` (UIScene) app lifecycle. Replaced the
+  deprecated `UIApplication.keyWindow` (returns `nil` in scene-based apps) with
+  key-window lookup over `connectedScenes`, so Facebook share dialogs and
+  `shareOptions` activity sheets present correctly.
+- iOS: switched the WhatsApp and Telegram shares to the non-deprecated
+  `openURL:options:completionHandler:` API.
+- iOS: added Swift Package Manager support alongside CocoaPods (Flutter 3.44+).
+  Sources moved to `ios/social_share/Sources/social_share/` with public headers
+  under `include/social_share/`, added `Package.swift` (Facebook SDK via the
+  `facebook-ios-sdk` SwiftPM package), and updated the podspec paths for
+  coexistence. CocoaPods continues to work for older Flutter versions.
+
 ## 2.3.1
 
 ### Changes for the new version is done by [dpacchi](https://github.com/dpacchi) 🙌🙌

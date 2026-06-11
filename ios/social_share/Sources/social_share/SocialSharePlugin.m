@@ -5,7 +5,7 @@
 
 #import "SocialSharePlugin.h"
 #include <objc/runtime.h>
-#import "FBSDKShareKit/FBSDKShareKit.h"
+#import <FBSDKShareKit/FBSDKShareKit.h>
 
 @interface SocialSharePlugin() <FBSDKSharingDelegate>
 
@@ -17,6 +17,52 @@
   FlutterMethodChannel* channel = [FlutterMethodChannel methodChannelWithName:@"social_share" binaryMessenger:[registrar messenger]];
   SocialSharePlugin* instance = [[SocialSharePlugin alloc] init];
   [registrar addMethodCallDelegate:instance channel:channel];
+}
+
+// Resolve the active key window. `[UIApplication sharedApplication].keyWindow`
+// is deprecated on iOS 13+ and returns nil once the app adopts the UIScene
+// (UISceneDelegate) lifecycle, so walk the connected window scenes instead.
+- (UIWindow *)keyWindow {
+    if (@available(iOS 13.0, *)) {
+        UIWindow *fallbackWindow = nil;
+        for (UIScene *scene in [UIApplication sharedApplication].connectedScenes) {
+            if (![scene isKindOfClass:[UIWindowScene class]]) {
+                continue;
+            }
+            UIWindowScene *windowScene = (UIWindowScene *)scene;
+            for (UIWindow *window in windowScene.windows) {
+                if (window.isKeyWindow) {
+                    return window;
+                }
+                if (fallbackWindow == nil) {
+                    fallbackWindow = window;
+                }
+            }
+            if (scene.activationState == UISceneActivationStateForegroundActive && fallbackWindow != nil) {
+                return fallbackWindow;
+            }
+        }
+        if (fallbackWindow != nil) {
+            return fallbackWindow;
+        }
+    }
+#if !TARGET_OS_MACCATALYST
+    // Pre-iOS 13 fallback.
+    return [UIApplication sharedApplication].keyWindow;
+#else
+    return nil;
+#endif
+}
+
+// Resolve the top-most presented view controller from the key window's root.
+- (UIViewController *)topViewController {
+    UIViewController *topController = [self keyWindow].rootViewController;
+    UIViewController *presentedViewController = [topController presentedViewController];
+    while (presentedViewController) {
+        topController = presentedViewController;
+        presentedViewController = [topController presentedViewController];
+    }
+    return topController;
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
@@ -135,13 +181,8 @@
 //            result(@"not supported or no messenger installed");
 //        }
         
-        UIViewController *topController =[UIApplication sharedApplication].keyWindow.rootViewController;
-        UIViewController *presentedViewController = [topController presentedViewController];
-        while (presentedViewController) {
-            topController = presentedViewController;
-            presentedViewController = [topController presentedViewController];
-        }
-        
+        UIViewController *topController = [self topViewController];
+
         FBSDKShareDialog *dialog = [[FBSDKShareDialog alloc]
                                     initWithViewController:topController
                                     content:shareLinkContent
@@ -261,7 +302,7 @@
         NSString * urlWhats = [NSString stringWithFormat:@"whatsapp://send?text=%@",content];
         NSURL * whatsappURL = [NSURL URLWithString:[urlWhats stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
-            [[UIApplication sharedApplication] openURL: whatsappURL];
+            [[UIApplication sharedApplication] openURL: whatsappURL options:@{} completionHandler:nil];
             result(@"success");
         } else {
             result(@"error");
@@ -272,7 +313,7 @@
         NSString * urlScheme = [NSString stringWithFormat:@"tg://msg?text=%@",content];
         NSURL * telegramURL = [NSURL URLWithString:[urlScheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         if ([[UIApplication sharedApplication] canOpenURL: telegramURL]) {
-            [[UIApplication sharedApplication] openURL: telegramURL];
+            [[UIApplication sharedApplication] openURL: telegramURL options:@{} completionHandler:nil];
             result(@"success");
         } else {
             result(@"error");
@@ -288,7 +329,7 @@
             UIActivityViewController *activityVC = [[UIActivityViewController alloc]
                                                     initWithActivityItems:objectsToShare
                                                     applicationActivities:nil];
-            UIViewController *controller =[UIApplication sharedApplication].keyWindow.rootViewController;
+            UIViewController *controller = [self topViewController];
             [controller presentViewController:activityVC animated:YES completion:nil];
             result(@"success");
         } else {
@@ -303,7 +344,7 @@
             UIActivityViewController *activityVC = [[UIActivityViewController alloc]
                                                     initWithActivityItems:objectsToShare
                                                     applicationActivities:nil];
-            UIViewController *controller =[UIApplication sharedApplication].keyWindow.rootViewController;
+            UIViewController *controller = [self topViewController];
             [controller presentViewController:activityVC animated:YES completion:nil];
             result(@"success");
         }
